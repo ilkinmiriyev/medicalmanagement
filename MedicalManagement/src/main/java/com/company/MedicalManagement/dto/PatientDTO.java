@@ -9,21 +9,21 @@ public class PatientDTO {
     private Long id ;
     private String fullName;
     private Date birthdate;
-    private Doctor doctor;
+//    private Doctor doctor;
 
 
     public PatientDTO(Patient patient) {
         this.id=patient.getId();
         this.fullName=patient.getFullName();
         this.birthdate=patient.getPatientBirthdate();
-        this.doctor=patient.getDoctor();
+//        this.doctor=patient.getDoctor();
     }
 
     public PatientDTO(Long id, String fullName, Date birthdate, Doctor doctor) {
         this.id = id;
         this.fullName = fullName;
         this.birthdate = birthdate;
-        this.doctor=doctor;
+//        this.doctor=doctor;
     }
 
     public PatientDTO() {
@@ -53,12 +53,12 @@ public class PatientDTO {
         this.birthdate = birthdate;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+//    public Doctor getDoctor() {
+//        return doctor;
+//    }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
+//    public void setDoctor(Doctor doctor) {
+//        this.doctor = doctor;
+//    }
 
 }

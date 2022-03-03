@@ -30,12 +30,12 @@ public class DoctorController {
     }
 
     @GetMapping("/{doctorId}")
-    public DoctorDTO getDoctorById(@PathVariable Long doctorId){
+    public DoctorDTO getDoctorById(@PathVariable("doctorId") Long doctorId){
         return doctorService.findById(doctorId);
     }
 
     @GetMapping("/{doctorId}/patient")
-    public List<PatientDTO> getPatientByDoctorId(@PathVariable Long doctorId){
+    public List<PatientDTO> getPatientByDoctorId(@PathVariable("doctorId") Long doctorId){
         return doctorService.findById(doctorId).getPatientDTO();
     }
 

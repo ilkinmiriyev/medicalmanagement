@@ -1,8 +1,8 @@
 package com.company.MedicalManagement.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,9 +23,9 @@ public class Patient {
     @Column(name = "birthdate")
     private Date patientBirthdate;
 
-    @ManyToOne
-    @JoinColumn(name="doctor_id")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
     public Patient() {

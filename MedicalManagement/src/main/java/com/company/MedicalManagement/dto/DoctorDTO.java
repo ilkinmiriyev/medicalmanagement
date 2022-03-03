@@ -1,9 +1,11 @@
 package com.company.MedicalManagement.dto;
 
 import com.company.MedicalManagement.model.Doctor;
+import org.modelmapper.ModelMapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DoctorDTO {
     private Long id ;
@@ -11,11 +13,16 @@ public class DoctorDTO {
     private Date birthdate;
     private List<PatientDTO> patientDTOS;
 
+    private final ModelMapper  modelMapper=new ModelMapper();
 
     public DoctorDTO(Doctor doctor) {
         this.id=doctor.getId();
         this.fullName=doctor.getFullName();
         this.birthdate=doctor.getBirthdate();
+        this.patientDTOS = doctor.getPatient()
+                .stream()
+                .map(patient -> modelMapper.map(patient, PatientDTO.class))
+                .collect(Collectors.toList());
     }
 
     public DoctorDTO(Long id, String fullName, Date birthdate, List<PatientDTO> patientDTOS) {
@@ -58,5 +65,15 @@ public class DoctorDTO {
 
     public void setPatientDTO(List<PatientDTO> patientDTOS) {
         this.patientDTOS = patientDTOS;
+    }
+
+    @Override
+    public String toString() {
+        return "DoctorDTO{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", birthdate=" + birthdate +
+                ", patientDTOS=" + patientDTOS +
+                '}';
     }
 }

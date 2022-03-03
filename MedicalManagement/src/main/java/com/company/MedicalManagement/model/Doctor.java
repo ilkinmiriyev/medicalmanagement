@@ -1,6 +1,6 @@
 package com.company.MedicalManagement.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,8 +24,6 @@ public class Doctor {
     @Column(name="birthdate")
     private Date birthdate;
 
-    @Column
-    @JsonIgnore
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     private List<Patient> patient;
 
@@ -59,5 +57,15 @@ public class Doctor {
 
     public void setPatient(List<Patient> patient) {
         this.patient = patient;
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", birthdate=" + birthdate +
+                ", patient=" + patient +
+                '}';
     }
 }

@@ -25,26 +25,24 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDTO findById(Long id) {
         Doctor doctor = doctorRepository
-                .findById(id)
-                .get();
-        return convertToDoctorDTO(doctor);
+                .findById(id).get();
+        return modelMapper.map(doctor, DoctorDTO.class);
     }
 
     @Override
     public List<DoctorDTO> findAll() {
-        System.out.println("Doctor Service IMPL "+doctorRepository.findAll().get(1).getPatient());
         return doctorRepository
                 .findAll()
                 .stream()
-                .map(this::convertToDoctorDTO)
+                .map(doctor-> new DoctorDTO(doctor))
                 .collect(Collectors.toList());
     }
 
     @Override
     public DoctorDTO save(DoctorDTO doctorDTO) {
-        Doctor doctor = convertDtoToEntity(doctorDTO);
+        Doctor doctor = modelMapper.map(doctorDTO, Doctor.class);
         Doctor savedDoctor = doctorRepository.save(doctor);
-        return convertToDoctorDTO(savedDoctor);
+        return modelMapper.map(savedDoctor, DoctorDTO.class);
     }
 
     @Override
@@ -52,11 +50,4 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.deleteById(id);
     }
 
-
-    private DoctorDTO convertToDoctorDTO(Doctor doctor){
-        return modelMapper.map(doctor, DoctorDTO.class);
-    }
-    private Doctor convertDtoToEntity(DoctorDTO doctorDTO){
-        return modelMapper.map(doctorDTO, Doctor.class);
-    }
 }

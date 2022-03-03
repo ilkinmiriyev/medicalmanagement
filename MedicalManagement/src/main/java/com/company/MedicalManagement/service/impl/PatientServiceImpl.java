@@ -4,6 +4,7 @@ import com.company.MedicalManagement.dto.PatientDTO;
 import com.company.MedicalManagement.model.Patient;
 import com.company.MedicalManagement.repository.PatientRepository;
 import com.company.MedicalManagement.service.PatientService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,19 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository){
+    public PatientServiceImpl(PatientRepository patientRepository, ModelMapper modelMapper){
+        this.modelMapper=modelMapper;
         this.patientRepository=patientRepository;
     }
 
     @Override
     public PatientDTO findById(Long id) {
         Patient patient = patientRepository
-                .findById(id)
-                .get();
-        return convertToPatientDTO(patient);
+                .getById(id);
+        return modelMapper.map(patient, PatientDTO.class);
     }
 
     @Override
@@ -34,17 +36,16 @@ public class PatientServiceImpl implements PatientService {
         List<PatientDTO> collect = patientRepository
                 .findAll()
                 .stream()
-                .map(this::convertToPatientDTO)
+                .map(patient -> modelMapper.map(patient, PatientDTO.class))
                 .collect(Collectors.toList());
-        System.out.println(" all patient in controller "+collect);
         return collect;
     }
 
     @Override
     public PatientDTO save(PatientDTO patientDTO) {
-        Patient patient = convertDtoToEntity(patientDTO);
+        Patient patient = modelMapper.map(patientDTO, Patient.class);
         Patient savedPatient = patientRepository.save(patient);
-        return convertToPatientDTO(savedPatient);
+        return modelMapper.map(savedPatient, PatientDTO.class);
     }
 
     @Override
@@ -52,17 +53,4 @@ public class PatientServiceImpl implements PatientService {
         patientRepository.deleteById(id);
     }
 
-    private PatientDTO convertToPatientDTO(Patient patient){
-        PatientDTO patientDTO=new PatientDTO();
-        patientDTO.setId(patient.getId());
-        patientDTO.setFullName(patient.getFullName());
-        patientDTO.setBirthdate(patient.getPatientBirthdate());
-        patientDTO.setDoctor(patient.getDoctor());
-        return patientDTO;
-    }
-    private Patient convertDtoToEntity(PatientDTO patientDTO){
-        Patient patient=new Patient();
-        BeanUtils.copyProperties(patientDTO,patient);
-        return patient;
-    }
 }
