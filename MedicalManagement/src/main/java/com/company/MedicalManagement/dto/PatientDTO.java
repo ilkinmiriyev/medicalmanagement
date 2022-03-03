@@ -1,31 +1,32 @@
 package com.company.MedicalManagement.dto;
 
 import com.company.MedicalManagement.model.Doctor;
+import com.company.MedicalManagement.model.Patient;
 
 import java.util.Date;
-import java.util.List;
 
-public class DoctorDTO {
+public class PatientDTO {
     private Long id ;
     private String fullName;
     private Date birthdate;
-    private List<PatientDTO> patientDTOS;
+    private Doctor doctor;
 
 
-    public DoctorDTO(Doctor doctor) {
-        this.id=doctor.getId();
-        this.fullName=doctor.getFullName();
-        this.birthdate=doctor.getBirthdate();
+    public PatientDTO(Patient patient) {
+        this.id=patient.getId();
+        this.fullName=patient.getFullName();
+        this.birthdate=patient.getPatientBirthdate();
+        this.doctor=patient.getDoctor();
     }
 
-    public DoctorDTO(Long id, String fullName, Date birthdate, List<PatientDTO> patientDTOS) {
+    public PatientDTO(Long id, String fullName, Date birthdate, Doctor doctor) {
         this.id = id;
         this.fullName = fullName;
         this.birthdate = birthdate;
-        this.patientDTOS=patientDTOS;
+        this.doctor=doctor;
     }
 
-    public DoctorDTO() {
+    public PatientDTO() {
     }
 
     public Long getId() {
@@ -52,11 +53,12 @@ public class DoctorDTO {
         this.birthdate = birthdate;
     }
 
-    public List<PatientDTO> getPatientDTO() {
-        return patientDTOS;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setPatientDTO(List<PatientDTO> patientDTOS) {
-        this.patientDTOS = patientDTOS;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
+
 }

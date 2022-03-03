@@ -1,10 +1,12 @@
 package com.company.MedicalManagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "doctor")
@@ -22,13 +24,18 @@ public class Doctor {
     @Column(name="birthdate")
     private Date birthdate;
 
-    public Doctor(Long id, String fullName, Date birthdate) {
-        this.id = id;
-        this.fullName = fullName;
-        this.birthdate = birthdate;
+    @Column
+    @JoinColumn
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Patient> patient;
+
+    public Long getId() {
+        return id;
     }
 
-    public Doctor() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullName() {
@@ -47,11 +54,11 @@ public class Doctor {
         this.birthdate = birthdate;
     }
 
-    public Long getId() {
-        return id;
+    public List<Patient> getPatient() {
+        return patient;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPatient(List<Patient> patient) {
+        this.patient = patient;
     }
 }

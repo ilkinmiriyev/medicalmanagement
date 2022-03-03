@@ -1,12 +1,22 @@
 package com.company.MedicalManagement.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
 public class ResponseDTO {
     private Integer errorCode;
     private String errorMessage;
     private String successMessage;
     private Object object;
 
-    public ResponseDTO(){
+    public ResponseDTO(String successMessage){
+        this.successMessage=successMessage;
+    }
+
+    public ResponseDTO() {
     }
 
     public static ResponseDTO of (String successMessage, Object object){
