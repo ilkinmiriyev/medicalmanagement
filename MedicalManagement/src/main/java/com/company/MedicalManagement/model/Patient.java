@@ -2,6 +2,7 @@ package com.company.MedicalManagement.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class Patient {
 
     @ManyToOne
     @JoinColumn(name="doctor_id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Doctor doctor;
 
     public Patient() {

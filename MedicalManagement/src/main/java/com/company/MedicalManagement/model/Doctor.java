@@ -25,9 +25,8 @@ public class Doctor {
     private Date birthdate;
 
     @Column
-    @JoinColumn
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     private List<Patient> patient;
 
     public Long getId() {

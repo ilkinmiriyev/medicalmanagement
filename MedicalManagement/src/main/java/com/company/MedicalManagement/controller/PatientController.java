@@ -27,7 +27,6 @@ public class PatientController {
 
     @GetMapping
     public List<PatientDTO> getAllPatient(){
-        System.out.println("all patient in controller "+patientService.findAll());
         return patientService.findAll();
     }
 

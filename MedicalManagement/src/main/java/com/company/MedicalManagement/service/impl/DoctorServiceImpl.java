@@ -4,7 +4,7 @@ import com.company.MedicalManagement.dto.DoctorDTO;
 import com.company.MedicalManagement.model.Doctor;
 import com.company.MedicalManagement.repository.DoctorRepository;
 import com.company.MedicalManagement.service.DoctorService;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
+    private ModelMapper modelMapper;
     private final DoctorRepository doctorRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository){
+    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper){
+        this.modelMapper=modelMapper;
         this.doctorRepository=doctorRepository;
     }
 
@@ -30,6 +32,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTO> findAll() {
+        System.out.println("Doctor Service IMPL "+doctorRepository.findAll().get(1).getPatient());
         return doctorRepository
                 .findAll()
                 .stream()
@@ -49,14 +52,11 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.deleteById(id);
     }
 
+
     private DoctorDTO convertToDoctorDTO(Doctor doctor){
-        DoctorDTO doctorDTO=new DoctorDTO();
-        BeanUtils.copyProperties(doctor, doctorDTO);
-        return doctorDTO;
+        return modelMapper.map(doctor, DoctorDTO.class);
     }
     private Doctor convertDtoToEntity(DoctorDTO doctorDTO){
-        Doctor doctor=new Doctor();
-        BeanUtils.copyProperties(doctorDTO,doctor);
-        return doctor;
+        return modelMapper.map(doctorDTO, Doctor.class);
     }
 }

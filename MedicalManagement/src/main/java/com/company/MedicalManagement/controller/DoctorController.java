@@ -1,6 +1,7 @@
 package com.company.MedicalManagement.controller;
 
 import com.company.MedicalManagement.dto.DoctorDTO;
+import com.company.MedicalManagement.dto.PatientDTO;
 import com.company.MedicalManagement.dto.ResponseDTO;
 import com.company.MedicalManagement.service.DoctorService;
 import io.swagger.annotations.Api;
@@ -31,6 +32,11 @@ public class DoctorController {
     @GetMapping("/{doctorId}")
     public DoctorDTO getDoctorById(@PathVariable Long doctorId){
         return doctorService.findById(doctorId);
+    }
+
+    @GetMapping("/{doctorId}/patient")
+    public List<PatientDTO> getPatientByDoctorId(@PathVariable Long doctorId){
+        return doctorService.findById(doctorId).getPatientDTO();
     }
 
     @PostMapping
