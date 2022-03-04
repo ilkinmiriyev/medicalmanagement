@@ -10,7 +10,6 @@ public class PatientDTO {
     private String fullName;
     private Date birthdate;
 
-
     public PatientDTO(Patient patient) {
         this.id = patient.getId();
         this.fullName = patient.getFullName();

@@ -1,6 +1,5 @@
 package com.company.MedicalManagement.service;
 
-
 import com.company.MedicalManagement.dto.DoctorDTO;
 
 import java.util.List;
@@ -12,8 +11,7 @@ public interface DoctorService {
 
     List<DoctorDTO> findAll();
 
-    DoctorDTO save (DoctorDTO doctorDTO);
+    DoctorDTO save(DoctorDTO doctorDTO);
 
     void deleteById(Long id);
-
 }

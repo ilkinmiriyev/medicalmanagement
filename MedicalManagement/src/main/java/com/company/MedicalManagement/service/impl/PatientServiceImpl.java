@@ -19,9 +19,9 @@ public class PatientServiceImpl implements PatientService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository, ModelMapper modelMapper){
-        this.modelMapper=modelMapper;
-        this.patientRepository=patientRepository;
+    public PatientServiceImpl(PatientRepository patientRepository, ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        this.patientRepository = patientRepository;
     }
 
     @Override

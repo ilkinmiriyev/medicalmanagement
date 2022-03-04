@@ -1,6 +1,5 @@
 package com.company.MedicalManagement.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
