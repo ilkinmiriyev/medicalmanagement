@@ -7,7 +7,9 @@ import com.company.MedicalManagement.service.DoctorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,16 +19,16 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper){
-        this.modelMapper=modelMapper;
-        this.doctorRepository=doctorRepository;
+    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        this.doctorRepository = doctorRepository;
     }
 
     @Override
-    public DoctorDTO findById(Long id) {
-        Doctor doctor = doctorRepository
-                .findById(id).get();
-        return modelMapper.map(doctor, DoctorDTO.class);
+    public Optional<DoctorDTO> findById(Long id) {
+        return doctorRepository
+                .findById(id)
+                .map(doctor -> new DoctorDTO(doctor));
     }
 
     @Override
@@ -34,7 +36,7 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository
                 .findAll()
                 .stream()
-                .map(doctor-> new DoctorDTO(doctor))
+                .map(doctor -> new DoctorDTO(doctor))
                 .collect(Collectors.toList());
     }
 
@@ -49,5 +51,4 @@ public class DoctorServiceImpl implements DoctorService {
     public void deleteById(Long id) {
         doctorRepository.deleteById(id);
     }
-
 }

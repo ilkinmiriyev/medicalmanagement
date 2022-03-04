@@ -4,10 +4,11 @@ package com.company.MedicalManagement.service;
 import com.company.MedicalManagement.dto.DoctorDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DoctorService {
 
-    DoctorDTO findById(Long id);
+    Optional<DoctorDTO> findById(Long id);
 
     List<DoctorDTO> findAll();
 

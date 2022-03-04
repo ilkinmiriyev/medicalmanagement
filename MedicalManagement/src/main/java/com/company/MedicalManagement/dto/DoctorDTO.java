@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DoctorDTO {
-    private Long id ;
+    private Long id;
     private String fullName;
     private Date birthdate;
     private List<PatientDTO> patientDTOS;
 
-    private final ModelMapper  modelMapper=new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
     public DoctorDTO(Doctor doctor) {
-        this.id=doctor.getId();
-        this.fullName=doctor.getFullName();
-        this.birthdate=doctor.getBirthdate();
+        this.id = doctor.getId();
+        this.fullName = doctor.getFullName();
+        this.birthdate = doctor.getBirthdate();
         this.patientDTOS = doctor.getPatient()
                 .stream()
                 .map(patient -> modelMapper.map(patient, PatientDTO.class))
@@ -29,7 +29,7 @@ public class DoctorDTO {
         this.id = id;
         this.fullName = fullName;
         this.birthdate = birthdate;
-        this.patientDTOS=patientDTOS;
+        this.patientDTOS = patientDTOS;
     }
 
     public DoctorDTO() {

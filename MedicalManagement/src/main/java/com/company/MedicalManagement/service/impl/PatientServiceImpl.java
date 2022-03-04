@@ -5,11 +5,11 @@ import com.company.MedicalManagement.model.Patient;
 import com.company.MedicalManagement.repository.PatientRepository;
 import com.company.MedicalManagement.service.PatientService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,10 +25,9 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDTO findById(Long id) {
-        Patient patient = patientRepository
-                .getById(id);
-        return modelMapper.map(patient, PatientDTO.class);
+    public Optional<PatientDTO> findById(Long id) {
+        return patientRepository.findById(id)
+                .map(patient -> new PatientDTO(patient));
     }
 
     @Override

@@ -19,17 +19,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.projectlombok:lombok:1.18.20'
-// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
-
-	// https://mvnrepository.com/artifact/org.projectlombok/lombok
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
-
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.0.2'
 }
 
 tasks.named('test') {

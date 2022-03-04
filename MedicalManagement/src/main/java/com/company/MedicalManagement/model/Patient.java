@@ -14,7 +14,7 @@ public class Patient {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty
+    @ApiModelProperty(name = "Id")
     private Long id;
 
     @Column(name = "fullname", nullable = false)
@@ -23,19 +23,22 @@ public class Patient {
     @Column(name = "birthdate")
     private Date patientBirthdate;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="doctor_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
+
+    @Column(name = "date_created")
+    private Date dateCreated;
 
     public Patient() {
     }
 
-    public Patient(Long id, String fullName, Date birthdate, Doctor doctor) {
+    public Patient(Long id, String fullName, Date patientBirthdate, Doctor doctor, Date dateCreated) {
         this.id = id;
         this.fullName = fullName;
-        this.patientBirthdate = birthdate;
+        this.patientBirthdate = patientBirthdate;
         this.doctor = doctor;
+        this.dateCreated = dateCreated;
     }
 
     public Long getId() {
@@ -60,6 +63,14 @@ public class Patient {
 
     public void setPatientBirthdate(Date patientBirthdate) {
         this.patientBirthdate = patientBirthdate;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public Doctor getDoctor() {

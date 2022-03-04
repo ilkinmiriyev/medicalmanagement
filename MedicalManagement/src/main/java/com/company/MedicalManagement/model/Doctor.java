@@ -1,6 +1,5 @@
 package com.company.MedicalManagement.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,19 +12,36 @@ import java.util.List;
 @ApiModel(value = "Doctor")
 public class Doctor {
     @Id
-    @Column(name = "id", nullable = false )
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty
+    @ApiModelProperty(value = "ID")
     private Long id;
 
-    @Column(name="fullname", nullable = false)
+    @ApiModelProperty("FullName")
+    @Column(name = "fullname", nullable = false)
     private String fullName;
 
-    @Column(name="birthdate")
+    @ApiModelProperty("BirthDate")
+    @Column(name = "birthdate")
     private Date birthdate;
 
+    @ApiModelProperty("Patients")
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     private List<Patient> patient;
+
+    @Column(name = "date_created")
+    private Date dateCreated;
+
+    public Doctor() {
+    }
+
+    public Doctor(Long id, String fullName, Date birthdate, List<Patient> patient, Date dateCreated) {
+        this.id = id;
+        this.fullName = fullName;
+        this.birthdate = birthdate;
+        this.patient = patient;
+        this.dateCreated = dateCreated;
+    }
 
     public Long getId() {
         return id;
@@ -57,6 +73,14 @@ public class Doctor {
 
     public void setPatient(List<Patient> patient) {
         this.patient = patient;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override

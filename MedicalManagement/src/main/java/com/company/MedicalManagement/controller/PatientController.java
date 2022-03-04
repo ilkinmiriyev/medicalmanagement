@@ -1,61 +1,83 @@
 package com.company.MedicalManagement.controller;
 
-import com.company.MedicalManagement.dto.DoctorDTO;
 import com.company.MedicalManagement.dto.PatientDTO;
-import com.company.MedicalManagement.dto.ResponseDTO;
-import com.company.MedicalManagement.service.DoctorService;
 import com.company.MedicalManagement.service.PatientService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/api/patient", produces ="application/json")
+@RequestMapping(path = "/api/patient", produces = "application/json")
 @Api(value = "Patient Api")
 public class PatientController {
 
     private final PatientService patientService;
 
     @Autowired
-    public PatientController(PatientService patientService){
-        this.patientService=patientService;
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
     }
 
+    @ApiOperation(value = "Get Patient")
     @GetMapping
-    public List<PatientDTO> getAllPatient(){
-        return patientService.findAll();
-    }
-
-    @GetMapping("/{patientId}")
-    public PatientDTO getPatientById(@PathVariable Long patientId){
-        return patientService.findById(patientId);
-    }
-
-    @PostMapping
-    public ResponseEntity<ResponseDTO> addPatient(@RequestBody PatientDTO patientDTO){
-        PatientDTO save = patientService.save(patientDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDTO.of("Successfully added", save));
-    }
-
-    @PutMapping("/{patientId}")
-    public ResponseEntity<ResponseDTO> updatePatient(@RequestBody PatientDTO patientDTO, @PathVariable Long patientId){
-        patientDTO.setId(patientId);
-        PatientDTO update = patientService.save(patientDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.of("Successfully updated", update));
-    }
-
-    @DeleteMapping("/{patientId}")
-    public ResponseEntity<ResponseDTO> deletePatient(@PathVariable Long patientId){
-        try{
-            patientService.deleteById(patientId);
-        }catch(Exception exception){
-            exception.printStackTrace();
+    public ResponseEntity<List<PatientDTO>> getAllPatient() {
+        List<PatientDTO> patientDTOS = patientService.findAll();
+        if (patientDTOS.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(patientDTOS, HttpStatus.OK);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.of("Successfully deleted"));
     }
 
+    @ApiOperation(value = "Get Patient BY ID")
+    @GetMapping("/{patientId}")
+    public ResponseEntity<PatientDTO> getPatientById(@PathVariable("patientId") Long patientId) {
+        Optional<PatientDTO> optionalPatientDTO = patientService.findById(patientId);
+        if (optionalPatientDTO.isPresent()) {
+            return new ResponseEntity<>(optionalPatientDTO.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @ApiOperation(value = "Add Patient")
+    @PostMapping
+    public ResponseEntity addPatient(@RequestBody PatientDTO patientDTO) {
+        try {
+            PatientDTO save = patientService.save(patientDTO);
+            return new ResponseEntity(save, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @ApiOperation(value = "Update Patient")
+    @PutMapping("/{patientId}")
+    public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO,
+                                                    @PathVariable("patientId") Long patientId) {
+        Optional<PatientDTO> optionalPatientDTO = patientService.findById(patientId);
+        if (optionalPatientDTO.isPresent()) {
+            patientDTO.setId(patientId);
+            return new ResponseEntity<>(patientService.save(patientDTO), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @ApiOperation(value = "Delete Patient")
+    @DeleteMapping("/{patientId}")
+    public ResponseEntity deletePatient(@PathVariable("patientId") Long patientId) {
+        try {
+            patientService.deleteById(patientId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
