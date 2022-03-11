@@ -18,11 +18,9 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
-    private final ModelMapper modelMapper;
 
     @Autowired
     public PatientServiceImpl(PatientRepository patientRepository, ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
         this.patientRepository = patientRepository;
     }
 
@@ -44,7 +42,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO save(PatientDTO patientDTO) {
-        Patient patient = new DtoPatientConverter().apply(patientDTO);
+        Patient patient = new DtoPatientConverter().convertToPatient(patientDTO);
         Patient savedPatient = patientRepository.save(patient);
         return new PatientDTO(savedPatient);
     }

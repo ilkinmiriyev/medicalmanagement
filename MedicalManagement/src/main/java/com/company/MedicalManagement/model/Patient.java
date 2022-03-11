@@ -22,7 +22,7 @@ public class Patient {
     @Column(name = "birthdate")
     private Date patientBirthdate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 

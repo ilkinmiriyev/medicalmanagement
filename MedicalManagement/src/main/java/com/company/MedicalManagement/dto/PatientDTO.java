@@ -9,20 +9,19 @@ public class PatientDTO {
     private Long id;
     private String fullName;
     private Date birthdate;
-//    private Doctor doctor;
+    private String doctorName;
 
     public PatientDTO(Patient patient) {
         this.id = patient.getId();
         this.fullName = patient.getFullName();
         this.birthdate = patient.getPatientBirthdate();
-//        this.doctor=patient.getDoctor();
+        this.doctorName = patient.getDoctor().getFullName();
     }
 
-    public PatientDTO(Long id, String fullName, Date birthdate) {
+    public PatientDTO(Long id, String fullName, Date birthdate, Doctor doctor) {
         this.id = id;
         this.fullName = fullName;
         this.birthdate = birthdate;
-//        this.doctor=doctor;
     }
 
     public PatientDTO() {
@@ -48,11 +47,15 @@ public class PatientDTO {
         this.birthdate = birthdate;
     }
 
-//    public Doctor getDoctor() {
-//        return doctor;
-//    }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-//    public void setDoctor(Doctor doctor) {
-//        this.doctor = doctor;
-//    }
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
 }

@@ -4,10 +4,8 @@ import com.company.MedicalManagement.dtoConverter.DtoDoctorConverter;
 import com.company.MedicalManagement.dto.DoctorDTO;
 import com.company.MedicalManagement.exception.ResourceNotFoundException;
 import com.company.MedicalManagement.model.Doctor;
-import com.company.MedicalManagement.model.Patient;
 import com.company.MedicalManagement.repository.DoctorRepository;
 import com.company.MedicalManagement.service.DoctorService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +41,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorDTO save(DoctorDTO doctorDTO) {
-        Doctor doctor = new DtoDoctorConverter().apply(doctorDTO);
+        Doctor doctor = new DtoDoctorConverter().convertToDoctor(doctorDTO);
 
         return new DoctorDTO(doctorRepository.save(doctor));
     }
