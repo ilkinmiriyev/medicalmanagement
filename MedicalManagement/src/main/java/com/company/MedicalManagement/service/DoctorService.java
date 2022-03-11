@@ -1,6 +1,7 @@
 package com.company.MedicalManagement.service;
 
 import com.company.MedicalManagement.dto.DoctorDTO;
+import com.company.MedicalManagement.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,5 +14,5 @@ public interface DoctorService {
 
     DoctorDTO save(DoctorDTO doctorDTO);
 
-    void deleteById(Long id);
+    void deleteById(Long id) throws ResourceNotFoundException;
 }

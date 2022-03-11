@@ -75,9 +75,10 @@ public class PatientController {
     public ResponseEntity deletePatient(@PathVariable("patientId") Long patientId) {
         try {
             patientService.deleteById(patientId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            System.out.println("Patient for delete :: "+patientId);
+            return new ResponseEntity<>("Succesfully deleted", HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

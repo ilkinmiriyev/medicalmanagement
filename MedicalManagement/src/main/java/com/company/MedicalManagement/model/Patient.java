@@ -11,7 +11,7 @@ import java.util.Date;
 @ApiModel(value = "Patient")
 public class Patient {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(name = "Id")
     private Long id;

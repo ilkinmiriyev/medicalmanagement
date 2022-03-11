@@ -1,7 +1,10 @@
 package com.company.MedicalManagement.service.impl;
 
+import com.company.MedicalManagement.dtoConverter.DtoDoctorConverter;
 import com.company.MedicalManagement.dto.DoctorDTO;
+import com.company.MedicalManagement.exception.ResourceNotFoundException;
 import com.company.MedicalManagement.model.Doctor;
+import com.company.MedicalManagement.model.Patient;
 import com.company.MedicalManagement.repository.DoctorRepository;
 import com.company.MedicalManagement.service.DoctorService;
 import org.modelmapper.ModelMapper;
@@ -15,12 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    private ModelMapper modelMapper;
     private final DoctorRepository doctorRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+    public DoctorServiceImpl(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
@@ -28,7 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
     public Optional<DoctorDTO> findById(Long id) {
         return doctorRepository
                 .findById(id)
-                .map(doctor -> new DoctorDTO(doctor));
+                .map(DoctorDTO::new);
     }
 
     @Override
@@ -36,19 +37,21 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository
                 .findAll()
                 .stream()
-                .map(doctor -> new DoctorDTO(doctor))
+                .map(DoctorDTO::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public DoctorDTO save(DoctorDTO doctorDTO) {
-        Doctor doctor = modelMapper.map(doctorDTO, Doctor.class);
-        Doctor savedDoctor = doctorRepository.save(doctor);
-        return modelMapper.map(savedDoctor, DoctorDTO.class);
+        Doctor doctor = new DtoDoctorConverter().apply(doctorDTO);
+
+        return new DoctorDTO(doctorRepository.save(doctor));
     }
 
     @Override
-    public void deleteById(Long id) {
-        doctorRepository.deleteById(id);
+    public void deleteById(Long id) throws ResourceNotFoundException {
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ID not found for deleteById"));
+        doctorRepository.delete(doctor);
     }
 }

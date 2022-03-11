@@ -1,6 +1,8 @@
 package com.company.MedicalManagement.service.impl;
 
 import com.company.MedicalManagement.dto.PatientDTO;
+import com.company.MedicalManagement.dtoConverter.DtoPatientConverter;
+import com.company.MedicalManagement.exception.ResourceNotFoundException;
 import com.company.MedicalManagement.model.Patient;
 import com.company.MedicalManagement.repository.PatientRepository;
 import com.company.MedicalManagement.service.PatientService;
@@ -35,21 +37,23 @@ public class PatientServiceImpl implements PatientService {
         List<PatientDTO> collect = patientRepository
                 .findAll()
                 .stream()
-                .map(patient -> modelMapper.map(patient, PatientDTO.class))
+                .map(patient -> new PatientDTO(patient))
                 .collect(Collectors.toList());
         return collect;
     }
 
     @Override
     public PatientDTO save(PatientDTO patientDTO) {
-        Patient patient = modelMapper.map(patientDTO, Patient.class);
+        Patient patient = new DtoPatientConverter().apply(patientDTO);
         Patient savedPatient = patientRepository.save(patient);
-        return modelMapper.map(savedPatient, PatientDTO.class);
+        return new PatientDTO(savedPatient);
     }
 
     @Override
-    public void deleteById(Long id) {
-        patientRepository.deleteById(id);
+    public void deleteById(Long id){
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found for this :: "+id));
+        patientRepository.delete(patient);
     }
 
 }

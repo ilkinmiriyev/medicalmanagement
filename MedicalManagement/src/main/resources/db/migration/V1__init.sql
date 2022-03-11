@@ -3,7 +3,7 @@ CREATE TABLE doctor
     id BIGINT AUTO_INCREMENT NOT NULL,
     fullname VARCHAR(255) NOT NULL,
     birthdate TIMESTAMP,
-    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_doctor PRIMARY KEY (id)
 );
 
@@ -13,7 +13,7 @@ CREATE TABLE patient
     fullname VARCHAR(255) NOT NULL,
     birthdate TIMESTAMP,
     doctor_id BIGINT,
-    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_patient PRIMARY KEY (id)
 );
 

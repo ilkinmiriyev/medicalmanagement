@@ -1,8 +1,10 @@
 package com.company.MedicalManagement.dto;
 
 import com.company.MedicalManagement.model.Doctor;
+import com.company.MedicalManagement.model.Patient;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,16 +15,27 @@ public class DoctorDTO {
     private Date birthdate;
     private List<PatientDTO> patientDTOS;
 
-    private final ModelMapper modelMapper = new ModelMapper();
+//    private final ModelMapper modelMapper = new ModelMapper();
 
     public DoctorDTO(Doctor doctor) {
         this.id = doctor.getId();
         this.fullName = doctor.getFullName();
         this.birthdate = doctor.getBirthdate();
-        this.patientDTOS = doctor.getPatient()
-                .stream()
-                .map(patient -> modelMapper.map(patient, PatientDTO.class))
-                .collect(Collectors.toList());
+
+       /* List<PatientDTO> patientDTOS=new ArrayList<>();
+
+        for (Patient patient : doctor.getPatient()) {
+            patientDTOS.add(new PatientDTO(patient));
+        }
+        this.patientDTOS=patientDTOS;*/
+
+
+        if (!(doctor.getPatient()==null || doctor.getPatient().isEmpty())) {
+            this.patientDTOS = doctor.getPatient()
+                    .stream()
+                    .map(patient -> new PatientDTO(patient))
+                    .collect(Collectors.toList());
+        }
     }
 
     public DoctorDTO(Long id, String fullName, Date birthdate, List<PatientDTO> patientDTOS) {

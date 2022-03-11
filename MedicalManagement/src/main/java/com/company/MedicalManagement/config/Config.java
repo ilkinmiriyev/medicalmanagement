@@ -1,4 +1,4 @@
-package com.company.MedicalManagement.conf;
+package com.company.MedicalManagement.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

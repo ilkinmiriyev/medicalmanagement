@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/api/doctor", produces = "application/json")
+@RequestMapping(path = "/api/doctor", consumes = "application/json", produces = "application/json")
 @Api(value = "Doctor Api")
 public class DoctorController {
 
@@ -48,7 +48,7 @@ public class DoctorController {
         }
     }
 
-    @ApiOperation(value = "Get Patients of Doctor BY ID")
+    @ApiOperation(value = "Get Patients BY DoctorID")
     @GetMapping("/{doctorId}/patient")
     public ResponseEntity<List<PatientDTO>> getPatientByDoctorId(@PathVariable("doctorId") Long doctorId) {
         Optional<DoctorDTO> optionalDoctorDTO = doctorService.findById(doctorId);
@@ -64,8 +64,9 @@ public class DoctorController {
     public ResponseEntity<DoctorDTO> addDoctor(@RequestBody DoctorDTO doctorDTO) {
         try {
             DoctorDTO save = doctorService.save(doctorDTO);
-            return new ResponseEntity<>(save, HttpStatus.CREATED);
+            return new ResponseEntity<>(save, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -75,7 +76,6 @@ public class DoctorController {
     public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody DoctorDTO doctorDTO, @PathVariable("doctorId") Long doctorId) {
         Optional<DoctorDTO> optionalDoctorDTO = doctorService.findById(doctorId);
         if (optionalDoctorDTO.isPresent()) {
-            doctorDTO.setId(doctorId);
             return new ResponseEntity<>(doctorService.save(doctorDTO), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
