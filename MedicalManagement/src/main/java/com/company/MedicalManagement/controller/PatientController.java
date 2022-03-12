@@ -1,6 +1,7 @@
 package com.company.MedicalManagement.controller;
 
 import com.company.MedicalManagement.dto.PatientDTO;
+import com.company.MedicalManagement.dto.RequestPatient;
 import com.company.MedicalManagement.service.PatientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,9 +49,9 @@ public class PatientController {
 
     @ApiOperation(value = "Add Patient")
     @PostMapping
-    public ResponseEntity addPatient(@RequestBody PatientDTO patientDTO) {
+    public ResponseEntity addPatient(@RequestBody RequestPatient patient) {
         try {
-            PatientDTO save = patientService.save(patientDTO);
+            PatientDTO save = patientService.save(patient);
             return new ResponseEntity(save, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,12 +60,12 @@ public class PatientController {
 
     @ApiOperation(value = "Update Patient")
     @PutMapping("/{patientId}")
-    public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO,
+    public ResponseEntity<PatientDTO> updatePatient(@RequestBody RequestPatient requestPatient,
                                                     @PathVariable("patientId") Long patientId) {
         Optional<PatientDTO> optionalPatientDTO = patientService.findById(patientId);
         if (optionalPatientDTO.isPresent()) {
-            patientDTO.setId(patientId);
-            return new ResponseEntity<>(patientService.save(patientDTO), HttpStatus.OK);
+            requestPatient.setId(patientId);
+            return new ResponseEntity<>(patientService.save(requestPatient), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -75,7 +76,7 @@ public class PatientController {
     public ResponseEntity deletePatient(@PathVariable("patientId") Long patientId) {
         try {
             patientService.deleteById(patientId);
-            System.out.println("Patient for delete :: "+patientId);
+            System.out.println("Patient for delete :: " + patientId);
             return new ResponseEntity<>("Succesfully deleted", HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

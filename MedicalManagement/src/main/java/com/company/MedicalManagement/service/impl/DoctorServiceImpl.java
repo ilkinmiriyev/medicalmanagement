@@ -1,7 +1,7 @@
 package com.company.MedicalManagement.service.impl;
 
-import com.company.MedicalManagement.dtoConverter.DtoDoctorConverter;
 import com.company.MedicalManagement.dto.DoctorDTO;
+import com.company.MedicalManagement.dtoConverter.DtoDoctorConverter;
 import com.company.MedicalManagement.exception.ResourceNotFoundException;
 import com.company.MedicalManagement.model.Doctor;
 import com.company.MedicalManagement.repository.DoctorRepository;
@@ -41,8 +41,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorDTO save(DoctorDTO doctorDTO) {
-        Doctor doctor = new DtoDoctorConverter().convertToDoctor(doctorDTO);
-
+        Doctor doctor = new DtoDoctorConverter().apply(doctorDTO);
         return new DoctorDTO(doctorRepository.save(doctor));
     }
 

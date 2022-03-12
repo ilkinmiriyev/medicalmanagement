@@ -1,6 +1,7 @@
 package com.company.MedicalManagement.service;
 
 import com.company.MedicalManagement.dto.PatientDTO;
+import com.company.MedicalManagement.dto.RequestPatient;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,7 @@ public interface PatientService {
 
     List<PatientDTO> findAll();
 
-    PatientDTO save(PatientDTO patientDTO);
+    PatientDTO save(RequestPatient patient);
 
     void deleteById(Long id);
 }
